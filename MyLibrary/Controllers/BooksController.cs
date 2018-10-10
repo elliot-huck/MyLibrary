@@ -49,9 +49,10 @@ namespace MyLibrary.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
-            ViewData["LibraryId"] = new SelectList(_context.Library, "LibraryId", "Name");
-            return View();
-        }
+			BookEditViewModel bookEditViewModel = new BookEditViewModel(_context);
+			bookEditViewModel.Book = new Book();
+			return View(bookEditViewModel);
+		}
 
         // POST: Books/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -66,8 +67,9 @@ namespace MyLibrary.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LibraryId"] = new SelectList(_context.Library, "LibraryId", "LibraryId", book.LibraryId);
-            return View(book);
+			BookEditViewModel bookEditViewModel = new BookEditViewModel(_context);
+			bookEditViewModel.Book = book;
+			return View(bookEditViewModel);
         }
 
         // GET: Books/Edit/5
@@ -83,8 +85,6 @@ namespace MyLibrary.Controllers
             {
                 return NotFound();
             }
-            //ViewData["LibraryId"] = new SelectList(_context.Library, "LibraryId", "LibraryId", book.LibraryId);
-
             BookEditViewModel bookEditViewModel = new BookEditViewModel(_context);
             bookEditViewModel.Book = book;
             return View(bookEditViewModel);
@@ -122,9 +122,6 @@ namespace MyLibrary.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["LibraryId"] = new SelectList(_context.Library, "LibraryId", "LibraryId", book.LibraryId);
-            //return View(book);
-
 			BookEditViewModel bookEditViewModel = new BookEditViewModel(_context);
 			bookEditViewModel.Book = book;
 			return View(bookEditViewModel);
