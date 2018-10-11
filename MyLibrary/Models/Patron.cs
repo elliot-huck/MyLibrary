@@ -22,5 +22,7 @@ namespace MyLibrary.Models
 
 		public virtual ICollection<Book> CheckedOutBooks { get; set; }
 
+		public virtual ICollection<LibraryPatron> Libraries { get; set; }
+
 	}
 }

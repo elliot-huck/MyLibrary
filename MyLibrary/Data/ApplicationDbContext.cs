@@ -13,5 +13,6 @@ namespace MyLibrary.Data
         public DbSet<Library> Library { get; set; }
         public DbSet<Book> Book { get; set; }
         public DbSet<MyLibrary.Models.Patron> Patron { get; set; }
+		public DbSet<LibraryPatron> LibraryPatron { get; set; }
     }
 }

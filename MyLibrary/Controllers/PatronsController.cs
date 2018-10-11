@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyLibrary.Data;
 using MyLibrary.Models;
+using MyLibrary.ViewModels;
 
 namespace MyLibrary.Controllers
 {
@@ -78,7 +79,11 @@ namespace MyLibrary.Controllers
             {
                 return NotFound();
             }
-            return View(patron);
+
+			PatronEditViewModel editPatron = new PatronEditViewModel(_context, id);
+			editPatron.Patron = patron;
+
+            return View(editPatron);
         }
 
         // POST: Patrons/Edit/5
@@ -86,8 +91,12 @@ namespace MyLibrary.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PatronId,FirstName,LastName,LibraryCardNumber")] Patron patron)
+        public async Task<IActionResult> Edit(int id, PatronEditViewModel editedPatron)
         {
+
+			Patron patron = editedPatron.Patron;
+			List<LibraryPatron> intersections = editedPatron.Intersections;
+
             if (id != patron.PatronId)
             {
                 return NotFound();
@@ -98,6 +107,7 @@ namespace MyLibrary.Controllers
                 try
                 {
                     _context.Update(patron);
+					_context.Update(intersections);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
